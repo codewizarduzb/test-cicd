@@ -1,0 +1,49 @@
+definitions:
+  models.Error:
+    properties:
+      message:
+        type: string
+    type: object
+  models.PingPong:
+    properties:
+      pingpong:
+        type: string
+    type: object
+  models.StandartErrorModel:
+    properties:
+      error:
+        $ref: '#/definitions/models.Error'
+    type: object
+info:
+  contact: {}
+paths:
+  /v1/pong:
+    get:
+      consumes:
+      - application/json
+      description: Api for getting PINGPONG
+      parameters:
+      - description: word
+        in: query
+        name: word
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.PingPong'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.StandartErrorModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StandartErrorModel'
+      summary: GET PINGPONG
+      tags:
+      - PINGPONG
+swagger: "2.0"

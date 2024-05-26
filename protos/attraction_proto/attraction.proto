@@ -1,0 +1,259 @@
+syntax = "proto3";
+
+package attraction;
+
+service AttractionService {
+    // Owner methods
+    rpc CreateOwner(Owner) returns (Owner); // create a new owner
+    rpc CheckUniqueness(UniquenessRequest) returns (UniquenessResponse);    // check uniquenesses
+    rpc GetOwner(GetOwnerRequest) returns (GetOwnerResponse);   // get owner by phone number
+    rpc DeleteOwner(DeleteOwnerRequest) returns (DeleteOwnerResponse);  // delete owner by phone number
+    rpc UpdateOwner(UpdateOwnerRequest) returns (UpdateOwnerResponse);   // update owner image
+    rpc GetAllOwners(GetAllOwnersRequest) returns (GetAllOwnersResponse);   // list of all owners
+
+    // Attraction methods
+    rpc CreateAttraction(Attraction) returns (Attraction);  // create a new attraction
+    rpc GetAttractionsByName(GetAttractionByNameRequest) returns (GetAttractionByNameResponse); // get attraction(s) by similar name
+    rpc GetAttractionsByCategory(GetAttractionsByCategoryRequest) returns (GetAttractionsByCategoryResponse);   // by category
+    rpc GetAttractionsByLocation(GetAttractionsByLocationRequest) returns (GetAttractionsByLocationResponse);   // by location
+    rpc GetAttractionsByRating(GetAttractionsByRatingRequest) returns(GetAttractionsByRatingResponse);  // list attractions by rating
+    rpc UpdateAttractionImage(UpdateAttractionImageRequest) returns(UpdateAttractionImageResponse); // update  attraction image
+    rpc DeleteAttractionImage(DeleteAttractionImageRequest) returns(DeleteAttractionImageResponse); // delete attraction image
+
+    // Review methods
+    rpc AddReview(Review) returns(Review);  // add a new review
+    rpc GetReview(GetReviewRequest) returns(GetReviewResponse); // get one review by id
+    rpc ListReviews(ListReviewsRequest) returns(ListReviewsResponse);   // get all reviews of one attraction
+    rpc UpdateReviewComment(UpdateReviewCommentRequest) returns(UpdateReviewCommentResponse);   // update review comment
+    rpc DeleteReview(DeleteReviewRequest) returns(DeleteReviewResponse);    // delete 
+
+    // Favourites
+    rpc AddToFavourites(AddToFavouritesRequest) returns(AddToFavouritesResponse);
+    rpc DropFromFavourites(DropFromFavouritesRequest) returns (DropFromFavouritesResponse);
+    rpc ListOfFavourites(ListOfFavouritesRequest) returns (ListOfFavouritesResponse);
+}
+
+message DeleteReviewRequest {
+    string review_id = 1;
+}
+
+message DeleteReviewResponse {
+    bool success = 1;
+}
+
+message UpdateReviewCommentRequest {
+    string review_id = 1;
+    string new_comment = 2;
+}
+
+message UpdateReviewCommentResponse {
+    bool success = 1;
+}
+
+message ListReviewsRequest {
+    string attraction_id = 1;
+}
+
+message ListReviewsResponse {
+    repeated Review reviews = 1;
+}
+
+message GetReviewRequest {
+    string review_id = 1;
+}
+
+message GetReviewResponse {
+    Review review = 1;
+}
+
+message DeleteAttractionImageRequest {
+    string attraction_id = 1;
+}
+
+message DeleteAttractionImageResponse {
+    bool success = 1;
+}
+
+message UpdateAttractionImageRequest {
+    string attraction_id = 1;
+    repeated Image images = 2;
+}
+
+message UpdateAttractionImageResponse {
+    bool success = 1;
+}
+
+message GetAttractionsByLocationRequest {
+    Location location = 1;
+}
+
+message GetAttractionsByLocationResponse {
+    repeated Attraction attractions = 1;
+}
+
+message GetAttractionsByCategoryRequest {
+    string category = 1;
+}
+
+message GetAttractionsByCategoryResponse {
+    repeated Attraction attractions = 1;
+}
+
+message GetAttractionsByRatingRequest {
+    int64 page = 1;
+    int64 limit = 2;
+}
+
+message GetAttractionsByRatingResponse {
+    repeated Attraction attractions = 1;
+}
+
+message GetAttractionByNameRequest {
+    string name = 1;
+}
+
+message GetAttractionByNameResponse {
+    repeated Attraction attractions = 1;
+}
+
+message Attraction {
+    string attraction_id = 1;
+    string name = 2;
+    string description = 3;
+    Location location = 4;
+    string working_hours = 5;
+    string category = 6;
+    float rating = 7;
+    repeated Image images = 8;
+    string website_url = 9;
+    string contact_information = 10;
+    string created_at = 11;
+    string updated_at = 12;
+    string deleted_at = 13;
+    string owner_id = 14;
+}
+
+message Image {
+    string image_id = 1;
+    string attraction_id = 2;
+    string image_url = 3;
+    string created_at = 4;
+}
+
+message Location {
+    string location_id = 1;
+    string location_name = 2;
+    float latitude = 3;
+    float longitude = 4;
+    string country = 5;
+    string city = 6;
+    string state_province = 7;
+    string address = 8;
+    string attraction_id = 9;
+}
+
+message Review {
+    int64 review_id = 1;
+    string attraction_id = 2;
+    string user_id = 3;
+    int64 rating = 4;
+    string comment = 5;
+    string created_at = 6;
+    string updated_at = 7;
+}
+
+message GetAllOwnersRequest {
+    int64 page = 1;
+    int64 limit = 2;
+}
+
+message GetAllOwnersResponse {
+    repeated Owner owners = 1;
+}
+
+message UpdateOwnerRequest {
+    string owner_id = 1;
+    string fullname = 2;
+    string password = 3;
+    string birthday = 4;
+    string phone_number = 5;
+    string image_url = 6;
+}
+
+message UpdateOwnerResponse {
+    bool success = 1;
+}
+
+message DeleteOwnerRequest {
+    string owner_id = 1;
+}
+
+message DeleteOwnerResponse {
+    bool success = 1;
+}
+
+message Owner{
+    string owner_id = 1;
+    string full_name = 2;
+    string email = 3;
+    string password = 4;
+    string birthday = 5;
+    string phone_number = 6;
+    string image_url = 7;
+    string role = 8;  
+    string refresh_token = 9;
+    string created_at = 10;
+    string updated_at = 11;
+    string deleted_at = 12;
+
+}
+
+message GetOwnerRequest {
+    string phone_number = 1;
+    string password = 2;
+}
+
+message GetOwnerResponse {
+    Owner Owner = 1;
+}
+
+message UniquenessRequest {
+    string email = 1;
+    string phone_number = 2;
+}
+
+message UniquenessResponse {
+    bool success = 1;
+}
+
+// Favourites
+
+message Favourite {
+    string favourite_id = 1;
+    string  user_id = 2;
+    string attraction_id = 3;
+}
+
+message AddToFavouritesRequest {
+    Favourite favourite = 1;
+}
+
+message AddToFavouritesResponse {
+    Favourite favourite = 1;
+}
+
+message DropFromFavouritesRequest {
+    string attraction_id = 1;
+}
+
+message DropFromFavouritesResponse {
+    bool success = 1;
+}
+
+message ListOfFavouritesRequest {
+    string user_id = 1;
+}
+
+message ListOfFavouritesResponse {
+    repeated Attraction attractions = 1;
+}
